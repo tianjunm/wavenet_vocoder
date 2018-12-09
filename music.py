@@ -3,8 +3,8 @@ from functools import partial
 import numpy as np
 import os
 import audio
-from nnmnkwii.datasets import cmu_arctic
-from nnmnkwii.io import hts
+# from nnmnkwii.datasets import cmu_arctic
+# from nnmnkwii.io import hts
 from nnmnkwii import preprocessing as P
 from hparams import hparams
 from os.path import exists
@@ -17,16 +17,15 @@ def build_from_path(in_dir, out_dir, num_workers=1, tqdm=lambda x: x):
     executor = ProcessPoolExecutor(max_workers=num_workers)
     futures = []
 
-    speakers = cmu_arctic.available_speakers
+    # speakers = cmu_arctic.available_speakers
 
-    wd = cmu_arctic.WavFileDataSource(in_dir, speakers=speakers)
-    wav_paths = wd.collect_files()
-    speaker_ids = wd.labels
+    # wd = cmu_arctic.WavFileDataSource(in_dir, speakers=speakers)
+    wav_paths = in_dir.collect_files()
+    # speaker_ids = wd.labels
 
-    for index, (speaker_id, wav_path) in enumerate(
-            zip(speaker_ids, wav_paths)):
+    for index, wav_path in enumerate(wav_paths):
         futures.append(executor.submit(
-            partial(_process_utterance, out_dir, index + 1, speaker_id, wav_path, "N/A")))
+            partial(_process_utterance, out_dir, index + 1, -1, wav_path, "N/A")))
     return [future.result() for future in tqdm(futures)]
 
 
