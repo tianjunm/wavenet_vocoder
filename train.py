@@ -67,6 +67,7 @@ if use_cuda:
     cudnn.benchmark = False
 
 
+# modified
 def sanity_check(model, c, g):
     if model.has_speaker_embedding():
         if g is None:
@@ -102,6 +103,7 @@ class _NPYDataSource(FileDataSource):
         self.data_root = data_root
         self.col = col
         self.lengths = []
+        # TODO: speker_id -> keywords
         self.speaker_id = speaker_id
         self.multi_speaker = False
         self.speaker_ids = None
