@@ -20,7 +20,10 @@ def build_from_path(in_dir, out_dir, num_workers=1, tqdm=lambda x: x):
     # speakers = cmu_arctic.available_speakers
 
     # wd = cmu_arctic.WavFileDataSource(in_dir, speakers=speakers)
-    wav_paths = in_dir.collect_files()
+    wav_paths = []
+    for file_ in os.listdir(in_dir):
+        if "wav" in file_:
+            wav_paths.append(file_)
     # speaker_ids = wd.labels
 
     for index, wav_path in enumerate(wav_paths):
